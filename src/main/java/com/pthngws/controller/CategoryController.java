@@ -41,21 +41,22 @@ public class CategoryController {
     @GetMapping("/edit")
     public String showEditForm(@RequestParam("id") int id, Model model) {
         Category category = categoryService.getCategoryById(id);
-        if (category != null) {
-            model.addAttribute("category", category);
-            return "category-edit";  // Đường dẫn tới view sửa danh mục
-        } else {
-            // Xử lý trường hợp không tìm thấy danh mục
-            return "redirect:/category";  // Hoặc hiển thị lỗi phù hợp
-        }
+        model.addAttribute("category", category);
+        return "category-edit";  // Đường dẫn tới view sửa danh mục
     }
+
 
 
     @PostMapping("/update")
     public String updateCategory(@ModelAttribute("category") Category category) {
-        categoryService.updateCategory(category);
+        // Kiểm tra ID có hợp lệ không
+            Category existingCategory = categoryService.getCategoryById((int) category.getCategoryId());
+            if (existingCategory != null) {
+                categoryService.updateCategory(category);  // Cập nhật
+            }
         return "redirect:/category";  // Redirect về danh sách danh mục
     }
+
 
     @GetMapping("/delete")
     public String deleteCategory(@RequestParam("id") int id) throws Exception {
