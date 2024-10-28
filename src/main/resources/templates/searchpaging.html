@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+
+<div class="container mt-5">
+    <div th:if="${message}">
+        <div th:text="${message}" class="alert alert-success"></div>
+    </div>
+
+    <a th:href="@{/category/add}" class="btn btn-primary mb-3">Add</a>
+
+    <!-- Search form -->
+    <form th:action="@{/category/searchpaginated}" method="get" class="d-flex mb-3">
+        <input type="text" name="name" id="name" placeholder="Nhập từ khóa để tìm" th:value="${name}" class="form-control" />
+        <button type="submit" class="btn btn-primary ms-2">Search</button>
+    </form>
+
+    <!-- Page size selection -->
+    <form method="get" th:action="@{/category/searchpaginated}" class="mb-3">
+        <label for="size" class="me-2">Page Size:</label>
+        <select name="size" id="size" class="form-select" onchange="this.form.submit()">
+            <option th:value="3" th:selected="${categoryPage.size == 3}">3</option>
+            <option th:value="5" th:selected="${categoryPage.size == 5}">5</option>
+            <option th:value="10" th:selected="${categoryPage.size == 10}">10</option>
+            <option th:value="15" th:selected="${categoryPage.size == 15}">15</option>
+            <option th:value="20" th:selected="${categoryPage.size == 20}">20</option>
+        </select>
+    </form>
+
+    <div th:if="${!categoryPage.hasContent()}" class="alert alert-warning">
+        No Category
+    </div>
+
+    <div th:if="${categoryPage.hasContent()}">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>STT</th>
+                <th>Category Name</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cate, status : ${categoryPage.content}">
+                <td th:text="${status.index + 1}"></td>
+                <td th:text="${cate.name}"></td>
+                <td>
+                    <a th:href="@{/category/edit/{id}(id=${cate.getId()})}">Edit</a> |
+                    <a th:href="@{/category/delete/{id}(id=${cate.getId()})}">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <div th:if="${categoryPage.totalPages > 0}">
+            <nav>
+                <ul class="pagination">
+                    <li th:each="pageNumber : ${pageNumbers}"
+                        th:class="${pageNumber == categoryPage.number + 1 ? 'page-item active' : 'page-item'}">
+                        <a th:href="@{/category/searchpaginated(name=${name}, size=${categoryPage.size}, page=${pageNumber})}"
+                           th:text="${pageNumber}" class="page-link"></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
