@@ -1,60 +1,72 @@
 package com.pthngws.service;
 
 import com.pthngws.entity.Category;
-import com.pthngws.repository.CategoryRepository;
-import com.pthngws.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import com.pthngws.repository.CategoryRepository;
+import com.pthngws.entity.Category;
+import com.pthngws.service.ICategoryService;
+
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements ICategoryService {
+    @Override
+    public long count() {
+        return categoryRepository.count();
+    }
+
+    @Override
+    public void deleteById(Long aLong) {
+        categoryRepository.deleteById(aLong);
+    }
 
     @Autowired
-    private CategoryRepository categoryRepository;
+    CategoryRepository categoryRepository;
 
     @Override
-    public List<Category> getAllCategories() {
-        return categoryRepository.getAllCategories();
+    public Page<Category> findAll(Pageable pageable) {
+        return categoryRepository.findAll(pageable);
     }
 
     @Override
-    public List<Category> getCategoriesByPage(int page, int pageSize) {
-        return categoryRepository.getCategoriesByPage(page, pageSize);
+    public List<Category> findAll(Sort sort) {
+        return categoryRepository.findAll(sort);
+    }
+    @Override
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
     }
 
     @Override
-    public Category getCategoryById(int id) {
-        return categoryRepository.getCategoryById(id);
+    public Optional<Category> findByName(String name) {
+        return categoryRepository.findByName(name);
     }
 
     @Override
-    public Category getCategoryByName(String name) {
-        return categoryRepository.getCategoryByName(name);
+    public Page<Category> findByNameContaining(String name, Pageable pageable) {
+        return categoryRepository.findByNameContaining(name, pageable);
     }
 
     @Override
-    public List<Category> searchCategoriesByName(String keyword) {
-        return categoryRepository.searchCategoriesByName(keyword);
+    public List<Category> findByNameContaining(String name) {
+        return categoryRepository.findByNameContaining(name);
+    }
+
+
+
+    @Override
+    public <S extends Category> S save(S entity) {
+        return categoryRepository.save(entity);
     }
 
     @Override
-    public void saveCategory(Category category) {
-        categoryRepository.saveCategory(category);
+    public Optional<Category> findById(Long id) {
+        return categoryRepository.findById(id);
     }
 
-    @Override
-    public void updateCategory(Category category) {
-        categoryRepository.updateCategory(category);
-    }
-
-    @Override
-    public void deleteCategoryById(int id) throws Exception {
-        categoryRepository.deleteCategoryById(id);
-    }
-
-    @Override
-    public int countCategories() {
-        return categoryRepository.countCategories();
-    }
 }

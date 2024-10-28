@@ -1,25 +1,32 @@
 package com.pthngws.service;
 
 import com.pthngws.entity.Category;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import java.util.List;
+import java.util.Optional;
 
 public interface ICategoryService {
 
-    List<Category> getAllCategories();
+    long count();
 
-    List<Category> getCategoriesByPage(int page, int pageSize);
+    void deleteById(Long aLong);
 
-    Category getCategoryById(int id);
 
-    Category getCategoryByName(String name);
+    Page<Category> findAll(Pageable pageable);
 
-    List<Category> searchCategoriesByName(String keyword);
+    List<Category> findAll(Sort sort);
 
-    void saveCategory(Category category);
 
-    void updateCategory(Category category);
+    List<Category> findAll();
 
-    void deleteCategoryById(int id) throws Exception;
+    Optional<Category> findByName(String name);
 
-    int countCategories();
+    Page<Category> findByNameContaining(String name, Pageable pageable);
+    List<Category> findByNameContaining(String name);
+    <S extends Category> S save(S entity);
+
+    Optional<Category> findById(Long id);
 }

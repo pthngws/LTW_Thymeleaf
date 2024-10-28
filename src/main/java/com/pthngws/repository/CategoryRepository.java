@@ -6,24 +6,12 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    List<Category> getAllCategories();
+    Optional<Category> findByName(String name);
+    List<Category> findByNameContaining(String name);
+    Page<Category> findByNameContaining(String name, Pageable pageable);
 
-    List<Category> getCategoriesByPage(int page, int pageSize);
-
-    Category getCategoryById(int id);
-
-    Category getCategoryByName(String name);
-
-    List<Category> searchCategoriesByName(String keyword);
-
-    void saveCategory(Category category);
-
-    void updateCategory(Category category);
-
-    void deleteCategoryById(int id) throws Exception;
-
-    int countCategories();
 }
