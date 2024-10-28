@@ -19,7 +19,7 @@
 
     <!-- Search form -->
     <form th:action="@{/category/searchpaginated}" method="get" class="d-flex mb-3">
-        <input type="text" name="name" id="name" placeholder="Nhập từ khóa để tìm" th:value="${name}" class="form-control" />
+        <input type="text" name="keyword" id="name" placeholder="Nhập từ khóa để tìm" th:value="${keyword}" class="form-control" />
         <button type="submit" class="btn btn-primary ms-2">Search</button>
     </form>
 
