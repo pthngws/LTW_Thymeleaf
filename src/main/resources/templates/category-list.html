@@ -11,36 +11,32 @@
 <div class="container mt-5">
     <a th:href="@{/category/add}" class="btn btn-primary mb-3">Add</a>
 
+    <!-- Search form -->
+    <form th:action="@{/category/search}" method="get" class="d-flex mb-3">
+        <input type="text" name="keyword" class="form-control" placeholder="Search by category name" />
+        <button type="submit" class="btn btn-primary ms-2">Search</button>
+    </form>
+
     <table class="table table-bordered">
         <thead>
         <tr>
             <th>STT</th>
             <th>Image</th>
             <th>Category Name</th>
-            <th>Status</th>
             <th>Action</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="cate, stat : ${listCategory}">
-            <td th:text="${stat.index + 1}"></td>
 
-            <!-- Image URL handling -->
-<!--            <td>-->
-<!--                <img th:src="${cate.images.startsWith('https') ? cate.images : '/image?frame=' + cate.images}"-->
-<!--                     height="150" width="200" alt="Category Image" />-->
-<!--            </td>-->
 
             <!-- Category Name -->
             <td th:text="${cate.name}"></td>
 
-            <!-- Status -->
-<!--            <td th:text="${cate.status == 1 ? 'Hoạt động' : 'Khóa'}"></td>-->
-
             <!-- Actions -->
             <td>
-                <a th:href="@{/category/edit(id=${cate.categoryId})}">Sửa</a> |
-                <a th:href="@{/category/delete(id=${cate.categoryId})}">Xóa</a>
+                <a th:href="@{/category/edit(id=${cate.categoryId})}">Edit</a> |
+                <a th:href="@{/category/delete(id=${cate.categoryId})}">Delete</a>
             </td>
         </tr>
         </tbody>
